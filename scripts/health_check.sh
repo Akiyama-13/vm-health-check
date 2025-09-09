@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# CPU 使用率
+# CPU usage
 cpu=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
-# 内存使用率
+# Memory usage
 mem=$(free | awk '/Mem/ {printf("%.2f"), $3/$2 * 100}')
-# 磁盘使用率
+# Disk usage
 disk=$(df / | awk 'END {print $5}' | sed 's/%//')
 
 explain=false
@@ -19,12 +19,12 @@ check_status () {
   if (( $(echo "$value > $threshold" | bc -l) )); then
     echo "❌ $name usage is high: $value%"
     if [ "$explain" = true ]; then
-      echo "   $name 已超过安全阈值，可能会导致系统变慢。"
+      echo "   $name has exceeded the safe threshold and may slow down the system."
     fi
   else
     echo "✅ $name usage is ok: $value%"
     if [ "$explain" = true ]; then
-      echo "   $name 在正常范围内。"
+      echo "   $name is within the normal range."
     fi
   fi
 }
